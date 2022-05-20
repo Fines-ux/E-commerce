@@ -4,35 +4,31 @@ const app = express();
 const bodyParser = require ('body-parser');//smooth parse of data
 const morgan = require ('morgan');  //logging requests
 const mongoose = require('mongoose');// library for mongodb
+const cors = require('cors');
+require ('dotenv/config');
 
+app.use(cors());
+app.options('*', cors());
 
 //middleware
 app.use(bodyParser.json());
 app.use(morgan('tiny'));
 
-require('dotenv/config');
+//Routes
+const categoriesRoutes = require('./routes/categories');
+const productRoutes = require('./routes/products');
+const userRoutes = require('./routes/users');
+const orderRoutes = require('./routes/orders');
 
 const api = process.env.API_URL;
 
-app.get(`${api}/products`, (req, res) => {
+app.use(`${api}/categories`, categoriesRoutes);
+app.use(`${api}/products`, productRoutes);
+app.use(`${api}/users`, userRoutes);
+app.use(`${api}/orders`, orderRoutes);
 
-    const product ={
-        id: 1,
-        name: "hair dresser",
-        image: "some_url",
 
-    }
-    res.send(product);
-})
-
-app.post(`${api}/products`, (req, res) => {
-
-   const newProduct = req.body;
-   console.log(newProduct); 
-   res.send(newProduct);
-
-})
-
+//database
 mongoose.connect(process.env.CONNECTION_STRING, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
