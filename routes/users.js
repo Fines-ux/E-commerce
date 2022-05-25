@@ -3,6 +3,7 @@ const express = require('express');
 const res = require('express/lib/response');
 const router = express.Router();
 
+
 router.get(`/`, async (req, res) => {
     const userList = await User.find();
 

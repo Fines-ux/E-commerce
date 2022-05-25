@@ -1,24 +1,24 @@
-const { request } = require('express');
-const express = require('express');
+const { request } = require("express");
+const express = require("express");
 const app = express();
-const bodyParser = require ('body-parser');//smooth parse of data
-const morgan = require ('morgan');  //logging requests
-const mongoose = require('mongoose');// library for mongodb
-const cors = require('cors');
-require ('dotenv/config');
+const bodyParser = require("body-parser"); //smooth parse of data
+const morgan = require("morgan"); //logging requests
+const mongoose = require("mongoose"); // library for mongodb
+const cors = require("cors");
+require("dotenv/config");
 
 app.use(cors());
-app.options('*', cors());
+app.options("*", cors());
 
 //middleware
 app.use(bodyParser.json());
-app.use(morgan('tiny'));
+app.use(morgan("tiny"));
 
 //Routes
-const categoriesRoutes = require('./routes/categories');
-const productRoutes = require('./routes/products');
-const userRoutes = require('./routes/users');
-const orderRoutes = require('./routes/orders');
+const categoriesRoutes = require("./routes/categories");
+const productRoutes = require("./routes/products");
+const userRoutes = require("./routes/users");
+const orderRoutes = require("./routes/orders");
 
 const api = process.env.API_URL;
 
@@ -27,22 +27,22 @@ app.use(`${api}/products`, productRoutes);
 app.use(`${api}/users`, userRoutes);
 app.use(`${api}/orders`, orderRoutes);
 
-
 //database
-mongoose.connect(process.env.CONNECTION_STRING, {
+mongoose
+  .connect(process.env.CONNECTION_STRING, {
+    //add my ip from google chrome and default gateway from ipcofig in cmd
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    dbName: 'E-commerce'
-})
-.then(() =>{
-    console.log('Database Connection is ready...')
-})
+    dbName: "E-shop",
+  })
+  .then(() => {
+    console.log("Database Connection is ready...");
+  })
 
-.catch((err)=>{
+  .catch((err) => {
     console.log(err);
-})
+  });
 
 app.listen(3000, () => {
-    
-    console.log('the server is running http://localhost:3000');
-})
+  console.log("the server is running http://localhost:3000");
+});
