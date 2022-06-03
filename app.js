@@ -5,6 +5,7 @@ const bodyParser = require("body-parser"); //smooth parse of data
 const morgan = require("morgan"); //logging requests
 const mongoose = require("mongoose"); // library for mongodb
 const cors = require("cors");
+const authJwt = require("./helpers/jwt");
 require("dotenv/config");
 
 app.use(cors());
@@ -13,6 +14,7 @@ app.options("*", cors());
 //middleware
 app.use(bodyParser.json());
 app.use(morgan("tiny"));
+app.use(authJwt());
 
 //Routes
 const categoriesRoutes = require("./routes/categories");
