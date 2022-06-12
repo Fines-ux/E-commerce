@@ -6,6 +6,7 @@ const morgan = require("morgan"); //logging requests
 const mongoose = require("mongoose"); // library for mongodb
 const cors = require("cors");
 const authJwt = require("./helpers/jwt");
+
 require("dotenv/config");
 
 app.use(cors());
@@ -15,12 +16,14 @@ app.options("*", cors());
 app.use(bodyParser.json());
 app.use(morgan("tiny"));
 app.use(authJwt());
+app.use("/public/uploads", express.static(__dirname + "/public/uploads"));
 
 //Routes
 const categoriesRoutes = require("./routes/categories");
 const productRoutes = require("./routes/products");
 const userRoutes = require("./routes/users");
 const orderRoutes = require("./routes/orders");
+const errorHandler = require("./helpers/error-handler");
 
 const api = process.env.API_URL;
 
